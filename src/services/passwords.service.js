@@ -2,13 +2,13 @@ const Password = require('../models/Password.model');
 
 const getAll = (userId) => Password.find({ userId }).sort({ createdAt: -1 });
 
-const create = (userId, { site, username, password }) =>
-  Password.create({ userId, site, username, password });
+const create = (userId, { encryptedData, iv }) =>
+  Password.create({ userId, encryptedData, iv });
 
-const update = async (userId, id, data) => {
+const update = async (userId, id, { encryptedData, iv }) => {
   const doc = await Password.findOneAndUpdate(
     { _id: id, userId },
-    { $set: data },
+    { $set: { encryptedData, iv } },
     { returnDocument: 'after', runValidators: true }
   );
   if (!doc) {

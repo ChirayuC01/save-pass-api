@@ -10,9 +10,9 @@ const COOKIE_OPTIONS = {
 
 const signup = async (req, res, next) => {
   try {
-    const { user, accessToken, refreshToken } = await authService.signup(req.body);
+    const { user, accessToken, refreshToken, keySalt } = await authService.signup(req.body);
     res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
-    success(res, { user, accessToken }, 'Account created', 201);
+    success(res, { user, accessToken, keySalt }, 'Account created', 201);
   } catch (err) {
     next(err);
   }
@@ -20,9 +20,9 @@ const signup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   try {
-    const { user, accessToken, refreshToken } = await authService.login(req.body);
+    const { user, accessToken, refreshToken, keySalt } = await authService.login(req.body);
     res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
-    success(res, { user, accessToken }, 'Logged in');
+    success(res, { user, accessToken, keySalt }, 'Logged in');
   } catch (err) {
     next(err);
   }
@@ -30,9 +30,9 @@ const login = async (req, res, next) => {
 
 const refresh = async (req, res, next) => {
   try {
-    const { user, accessToken, refreshToken } = await authService.refresh(req.cookies.refreshToken);
+    const { user, accessToken, refreshToken, keySalt } = await authService.refresh(req.cookies.refreshToken);
     res.cookie('refreshToken', refreshToken, COOKIE_OPTIONS);
-    success(res, { user, accessToken }, 'Token refreshed');
+    success(res, { user, accessToken, keySalt }, 'Token refreshed');
   } catch (err) {
     next(err);
   }
