@@ -23,13 +23,12 @@ app.use(async (req, res, next) => {
 });
 
 app.use(cors({
-  // origin: (origin, callback) => {
-  //   // Allow requests with no origin (curl, Postman, server-to-server)
-  //   if (!origin) return callback(null, true);
-  //   if (allowedOrigins.includes(origin)) return callback(null, true);
-  //   callback(new Error(`CORS: origin '${origin}' not allowed`));
-  // },
-  origin: true,
+  origin: (origin, callback) => {
+    // Allow requests with no origin (curl, Postman, server-to-server)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) return callback(null, true);
+    callback(new Error(`CORS: origin '${origin}' not allowed`));
+  },
   credentials: true,
 }));
 app.use(express.json());
