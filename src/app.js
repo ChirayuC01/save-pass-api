@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { clientUrl } = require('./config/env');
+const { allowedOrigins } = require('./config/env');
 const v1Routes = require('./routes/v1');
 const { errorHandler, notFound } = require('./middleware/errorHandler.middleware');
 const logger = require('./utils/logger');
@@ -23,7 +23,13 @@ app.use(async (req, res, next) => {
 });
 
 app.use(cors({
-  origin: clientUrl,
+  // origin: (origin, callback) => {
+  //   // Allow requests with no origin (curl, Postman, server-to-server)
+  //   if (!origin) return callback(null, true);
+  //   if (allowedOrigins.includes(origin)) return callback(null, true);
+  //   callback(new Error(`CORS: origin '${origin}' not allowed`));
+  // },
+  origin: true,
   credentials: true,
 }));
 app.use(express.json());

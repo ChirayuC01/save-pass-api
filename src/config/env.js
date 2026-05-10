@@ -17,5 +17,10 @@ module.exports = {
   jwtExpiry: process.env.JWT_EXPIRY || '15m',
   jwtRefreshExpiry: process.env.JWT_REFRESH_EXPIRY || '7d',
   nodeEnv: process.env.NODE_ENV || 'development',
-  clientUrl: process.env.CLIENT_URL || 'http://localhost:5173',
+  // Comma-separated list of allowed origins, e.g.:
+  // CLIENT_URL=https://save-pass-gold.vercel.app,http://localhost:5173
+  allowedOrigins: (process.env.CLIENT_URL || 'http://localhost:5173')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
 };
