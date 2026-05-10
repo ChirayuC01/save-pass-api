@@ -1,10 +1,16 @@
 const authService = require('../services/auth.service');
 const { success } = require('../utils/apiResponse');
 
+// SameSite=None is required when the frontend and backend are on different
+// origins (e.g. save-pass-gold.vercel.app → save-pass-api.vercel.app).
+// vercel.app is a public suffix, so different subdomains are treated as
+// cross-site by the browser. SameSite=Strict would silently block the
+// refresh-token cookie on every cross-site request.
+// SameSite=None MUST be paired with Secure=true (https only).
 const COOKIE_OPTIONS = {
   httpOnly: true,
-  secure: process.env.NODE_ENV === 'production',
-  sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
+  secure: true,
+  sameSite: 'none',
   maxAge: 7 * 24 * 60 * 60 * 1000,
 };
 
